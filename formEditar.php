@@ -26,11 +26,11 @@ require("php/funciones.php");
         <?php
             
 
-            // Verificar si se recibió el ID de la persona
-            if(isset($_GET['Id'])) {
+            // Verifico si se recibió el ID de la persona
+            if(isset($_GET['Id']) && !empty($_GET['Id'])) {
                 $id = $_GET['Id']; 
             
-                // Obtener los datos de la persona
+                // Obtengo los datos de la persona
                 $persona = obtenerPersona($id, $conexion);
             
                 if ($persona) {
@@ -97,6 +97,7 @@ require("php/funciones.php");
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <input type="hidden" name="action" value="actualizar">
                     <button type="submit" name="actualizar" class="btn btn-primary">Actualizar Persona</button>
                     <a href="index.php" class="btn btn-primary" style="margin:10px;">Cancelar</a>
                 </div>
