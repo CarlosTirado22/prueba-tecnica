@@ -23,7 +23,18 @@ require("php/funciones.php");
             <h1 class="actu">Actualizar datos</h1>
         </section>
         <section class="table__body tbody">
-        
+        <?php
+            
+
+            // Verificar si se recibió el ID de la persona
+            if(isset($_GET['Id'])) {
+                $id = $_GET['Id']; 
+            
+                // Obtener los datos de la persona
+                $persona = obtenerPersona($id, $conexion);
+            
+                if ($persona) {
+        ?>
             <form method="POST" class="form" action="">
                 <div class="modal-body mbody">
 
@@ -90,7 +101,14 @@ require("php/funciones.php");
                     <a href="index.php" class="btn btn-primary" style="margin:10px;">Cancelar</a>
                 </div>
             </form>    
-             
+            <?php
+                } else {
+                    echo "No se encontró la persona.";
+                }
+            } else {
+                echo "ID de persona no proporcionado.";
+            }
+        ?>  
         </section>
     </main>  
 </body>

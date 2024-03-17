@@ -39,6 +39,93 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nombre']) && isset($_P
     }
 }
 
+//Función para actualizar
+//primero obtengo el ID de la persona
+function obtenerPersona($id) {
+    global $conexion;
+
+    // Preparar la consulta
+    $sql = "SELECT * FROM personas WHERE id = ?";
+    
+    // Preparar la declaración
+    $stmt = mysqli_prepare($conexion, $sql);
+    
+    // Esto protege el código contra la inyección SQL
+    mysqli_stmt_bind_param($stmt, "i", $id);
+    
+    // Ejecutar la consulta
+    mysqli_stmt_execute($stmt);
+
+    // Obtener el resultado
+    $resultado = mysqli_stmt_get_result($stmt);
+
+    // Obtener los datos de la persona
+    $persona = mysqli_fetch_assoc($resultado);
+
+    return $persona;
+}
+
+//realizo la función para actualizar
+function actualizarPersona($id, $datos) {
+    global $conexion;
+
+    // Preparar la consulta
+    $sql = "UPDATE personas SET nombre=?, apellido=?, edad=?, correo_electronico=?, telefono=?, direccion=?, ciudad=?, codigo_postal=?, pais=?, tipo_documento=?, fecha_expedicion=?, fecha_nacimiento=? WHERE id=?";
+    
+    // Preparar la declaración
+    $stmt = mysqli_prepare($conexion, $sql);
+    
+    // Esto protege el código contra la inyección SQL
+    mysqli_stmt_bind_param($stmt, "ssisssssssssi", 
+                              $datos['nombre'], 
+                              $datos['apellido'], 
+                              $datos['edad'], 
+                              $datos['correo_electronico'], 
+                              $datos['telefono'], 
+                              $datos['direccion'], 
+                              $datos['ciudad'], 
+                              $datos['codigo_postal'], 
+                              $datos['pais'], 
+                              $datos['tipo_documento'], 
+                              $datos['fecha_expedicion'], 
+                              $datos['fecha_nacimiento'], 
+                              $id);
+    
+    // Ejecutar la consulta
+    $resultado = mysqli_stmt_execute($stmt);
+    
+    // Verificar si la consulta se ejecutó correctamente
+    if ($resultado) {
+        return "Los datos se actualizaron correctamente.";
+    } else {
+        return "Error al actualizar los datos: " . mysqli_stmt_error($stmt);
+    }
+}
+
+// Verificar si se ha enviado el formulario
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar'])) {
+    // Obtener los datos del formulario
+    $datos = array(
+        'nombre' => $_POST['nombre'],
+        'apellido' => $_POST['apellido'],
+        'edad' => $_POST['edad'],
+        'correo_electronico' => $_POST['correo_electronico'],
+        'telefono' => $_POST['telefono'],
+        'direccion' => $_POST['direccion'],
+        'ciudad' => $_POST['ciudad'],
+        'codigo_postal' => $_POST['codigo_postal'],
+        'pais' => $_POST['pais'],
+        'tipo_documento' => $_POST['tipo_documento'],
+        'fecha_expedicion' => $_POST['fecha_expedicion'],
+        'fecha_nacimiento' => $_POST['fecha_nacimiento']
+    );
+
+    // Actualizar persona existente
+    $id = $_POST['id'];
+    $mensaje = actualizarPersona($id, $datos);
+
+    echo $mensaje; // Muestra el mensaje de éxito o error
+}
 
 
 // Función para eliminar un dato
