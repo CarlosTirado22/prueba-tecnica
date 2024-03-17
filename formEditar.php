@@ -35,10 +35,10 @@ require("php/funciones.php");
             
                 if ($persona) {
         ?>
-            <form method="POST" class="form" action="">
+            <form method="POST" class="form" action="php/funciones.php">
                 <div class="modal-body mbody">
 
-                    <input type="hidden" name="Id" value="<?php echo $persona['id']; ?>">
+                    <input type="hidden" name="id" value="<?php echo isset($persona['id']) ? $persona['id'] : ''; ?>">
 
 
                     <div class="form-group">

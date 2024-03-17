@@ -104,7 +104,8 @@ function actualizarPersona($id, $datos) {
 
 // Verificar si se ha enviado el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar'])) {
-    // Obtener los datos del formulario
+    // Obtener los datos actualizados del formulario
+    $id = $_POST['id'];
     $datos = array(
         'nombre' => $_POST['nombre'],
         'apellido' => $_POST['apellido'],
@@ -120,10 +121,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar'])) {
         'fecha_nacimiento' => $_POST['fecha_nacimiento']
     );
 
-    // Actualizar persona existente
-    $id = $_POST['id'];
+    // Llamar a la función para actualizar los datos
     $mensaje = actualizarPersona($id, $datos);
-
     echo $mensaje; // Muestra el mensaje de éxito o error
 }
 
